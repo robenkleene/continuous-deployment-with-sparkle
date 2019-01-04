@@ -12,7 +12,12 @@ Agile + Continuous Integration + Deployment
 
 Nothing manual to ship to customers.
 
-Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a build.
+Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a build. Manually generate the appcast.
+
+### Two Manual Steps
+
+1. Create the tag
+2. Generate the appcast
 
 ---
 
@@ -66,10 +71,13 @@ How to do it for free?
 
 ## System
 
-1. Continuous integration with Bitrise
-2. `rsync` it to the server
-3. Manual create the Appcast
-4. Deploy build for each tag
+1. Continuous Integration
+	- `xcodebuild` the zip
+	- `rsync` the zip to the server
+2. Manually Create the Appcast
+	- `rsync` down all the zips
+	- `generate_appcast` to create the `appcast.xml`
+	- `rsync` the `appcast.xml` up to the sever
 
 ---
 
@@ -98,6 +106,7 @@ How to do it for free?
 ## Deploying
 
 	app_version=$(agvtool what-marketing-version -terse1 | tr -d '\n')
+
 	rsync --archive --compress --ignore-existing --verbose \
 	  $zip_path \
 	user@server:\
@@ -109,12 +118,23 @@ Only run this for tags!
 
 ## Appcast
 
+	rsync --archive --verbose --delete \
+	user@server:\
+	"path/to/download.thepotionlab.com/potion/" \
+	./updates/
+
+	generate_appcast ./updates/potion/
+
+Nice way to create a backup of all your builds.
+
 ---
 
 ## Signing
+
+Bitrise handles this.
 
 ---
 
 ## Notarizing?
 
----
+Need to wait an indefinite amount of time after uploading your app package to find out whether notarizing was successful.
