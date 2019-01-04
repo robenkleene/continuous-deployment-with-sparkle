@@ -10,6 +10,10 @@
 
 Agile + Continuous Integration + Deployment
 
+Nothing manual to ship to customers.
+
+Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a build.
+
 ---
 
 ## Why Continuous Deployment?
@@ -49,6 +53,17 @@ But managing releases are still tedious.
 
 ---
 
+## Continuous Integration Services
+
+- **Bitrise**: $36/month (200 free builds a month)
+- **Travis**: $69/month (Free for open source)
+- **CircleCI**: $39/month (Nothing free for macOS)
+- **App Center**: $40/month (250 free build minutes per month)
+
+How to do it for free?
+
+---
+
 ## System
 
 1. Continuous integration with Bitrise
@@ -60,9 +75,39 @@ But managing releases are still tedious.
 
 ## Build Steps
 
+	SCHEME = Potion
+	EXPORT_PATH = build/
+	ARCHIVE_PATH = $(EXPORT_PATH)$(SCHEME).xcarchive
+	APP_PATH = $(EXPORT_PATH)$(SCHEME).app
+	ZIP_PATH = $(EXPORT_PATH)$(SCHEME).zip
+
 	xcodebuild archive \
 		-scheme $(SCHEME) \
 		-archivePath $(ARCHIVE_PATH)
+
+	xcodebuild \
+		-exportArchive \
+		-archivePath $(ARCHIVE_PATH) \
+		-exportOptionsPlist ExportOptions.plist \
+		-exportPath $(EXPORT_PATH)
+
+	/usr/bin/ditto -c -k --keepParent $(APP_PATH) $(ZIP_PATH)
+
+---
+
+## Deploying
+
+	app_version=$(agvtool what-marketing-version -terse1 | tr -d '\n')
+	rsync --archive --compress --ignore-existing --verbose \
+	  $zip_path \
+	user@server:\
+	"path/to/download.thepotionlab.com/potion/Potion\\ ${app_version}.zip"
+
+Only run this for tags!
+
+---
+
+## Appcast
 
 ---
 
@@ -70,9 +115,6 @@ But managing releases are still tedious.
 
 ---
 
-## Continuous Integration Services
+## Notarizing?
 
-Bitrise $36/month (200 free builds a month)
-Travis $69/month (Free for open source)
-CirtcleCI $39/month (Nothing from for macOS)
-App Center $40/month (250 free build minutes per month)
+---
