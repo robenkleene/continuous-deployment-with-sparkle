@@ -1,75 +1,81 @@
 # Continuous Deployment With Sparkle for macOS Apps
 
+[robenkleene/continuous-deployment-with-sparkle](https://github.com/robenkleene/continuous-deployment-with-sparkle)
+
 [@robenkleene](https://twitter.com/robenkleene)
 [robenkleene.com](https://robenkleene.com)
 [thepotionlab.com](https://thepotionlab.com)
 
 ---
 
-## What's Continuous Deployment?
+# What's Continuous Deployment?
 
 Agile + Continuous Integration + Deployment
 
-Nothing manual to ship to customers.
+No manual steps to ship to customers.
+
+---
+
+# ...still two manual steps
 
 Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a build. Manually generate the appcast.
-
-### Two Manual Steps
 
 1. Create the tag
 2. Generate the appcast
 
 ---
 
-## Why Continuous Deployment?
+# Why Continuous Deployment?
 
-[The Continuous Culture by Kim van Wilgen](https://www.youtube.com/watch?v=x47pgeWxXHY)
+["The Continuous Culture"](https://www.youtube.com/watch?v=x47pgeWxXHY)  by Kim van Wilgen
 
-### Unused features
+- **Slow**: 1 release every 100 days
+- **Fast**: 7448 releases a day (Amazon)
+
+---
+
+# Unused features
 
 - **Large Deliveries**: 64% 
 - **Small Deliveries**: 14%
 
-### Chance of Success
+# Chance of Success
 
 - **Large Project**: 10%
 - **Small Projects**: 74%
 
 ---
 
-- **Slow**: 1 release every 100 days
-- **Fast**: 7448 releases a day (Amazon)
+# 2017 State of DevOps Report
 
-### 2017 State of DevOps Report
+*"High performers are doing significantly less manual work"*
+
+*"HP LaserJet was able to increase time spent on developing new features by 700 percent."*
 
 Focus on high value work.
 
-"High performers are doing significantly less manual work"
+---
 
-"HP LaserJet was able to increase time spent on developing new features by 700 percent.""
+# Uh, Native Apps?
+
+Releases are more costly and harder to rollback.
+
+But managing releases is still tedious.
 
 ---
 
-## Uh, Native Apps?
-
-All this is only tangentially related to native app development where releases are more costly, and harder to rollback.
-
-But managing releases are still tedious.
-
----
-
-## Continuous Integration Services
+# Continuous Integration Services
 
 - **Bitrise**: $36/month (200 free builds a month)
 - **Travis**: $69/month (Free for open source)
 - **CircleCI**: $39/month (Nothing free for macOS)
 - **App Center**: $40/month (250 free build minutes per month)
 
-How to do it for free?
+# How about free?
 
 ---
 
-## System
+# System
 
 1. Continuous Integration
 	- `xcodebuild` the zip
@@ -78,6 +84,20 @@ How to do it for free?
 	- `rsync` down all the zips
 	- `generate_appcast` to create the `appcast.xml`
 	- `rsync` the `appcast.xml` up to the sever
+
+---
+
+## Signing
+
+Bitrise handles this.
+
+Sparkle EdDSA signing.
+
+---
+
+## Notarizing?
+
+Need to wait an indefinite amount of time after uploading your app package to find out whether notarizing was successful.
 
 ---
 
@@ -125,16 +145,20 @@ Only run this for tags!
 
 	generate_appcast ./updates/potion/
 
-Nice way to create a backup of all your builds.
+(Also a nice way to create a backup of all your builds.)
 
 ---
 
-## Signing
+## Publishing Appcast?
 
-Bitrise handles this.
+Once your appcast is published.
 
 ---
 
-## Notarizing?
+# Thanks!
 
-Need to wait an indefinite amount of time after uploading your app package to find out whether notarizing was successful.
+[robenkleene/continuous-deployment-with-sparkle](https://github.com/robenkleene/continuous-deployment-with-sparkle)
+
+[@robenkleene](https://twitter.com/robenkleene)
+[robenkleene.com](https://robenkleene.com)
+[thepotionlab.com](https://thepotionlab.com)
