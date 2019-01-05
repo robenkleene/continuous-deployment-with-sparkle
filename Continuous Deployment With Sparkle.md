@@ -27,7 +27,7 @@ Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a 
 
 # Why Continuous Deployment?
 
-["The Continuous Culture"](https://www.youtube.com/watch?v=x47pgeWxXHY)  by Kim van Wilgen
+["The Continuous Culture"](https://www.youtube.com/watch?v=x47pgeWxXHY) by Kim van Wilgen
 
 - **Slow**: 1 release every 100 days
 - **Fast**: 7448 releases a day (Amazon)
@@ -61,6 +61,15 @@ Focus on high value work.
 Releases are more costly and harder to rollback.
 
 But managing releases is still tedious.
+
+---
+
+# Why not Mac App Store?
+
+- File-system access
+- Process management
+- Programming
+- Freedom
 
 ---
 
