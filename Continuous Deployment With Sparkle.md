@@ -92,16 +92,16 @@ But managing releases is still tedious.
 
 # Implementation Summary
 
-**Build the App on the Continuous Integration Server**
+**Build the app** on the continuous integration server
 
-- `xcodebuild` the zip
-- `rsync` the zip to the server
+1. `xcodebuild` the zip
+2. `rsync` the zip to the server
 
-**Manually Create the Appcast on a Developer Machine**
+**Manually create the appcast** on a developer machine
 
-- `rsync` down all the zips
-- `generate_appcast` to create the `appcast.xml`
-- `rsync` the `appcast.xml` and deltas back to the sever
+1. `rsync` down all the zips
+2. `generate_appcast` to create the `appcast.xml`
+3. `rsync` the `appcast.xml` and deltas back to the sever
 
 ---
 
