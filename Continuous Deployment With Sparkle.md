@@ -16,12 +16,18 @@ No manual steps to ship to customers.
 
 ---
 
-# ...still two manual steps
+## ...still two manual steps
 
-Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a build. Manually generate the appcast.
+**The Process**
 
-1. Create the tag
-2. Generate the appcast
+- Branch `master` is always ready to ship
+- Ceating a `X.X.X` version tag uploads a build
+- Manually generate the appcast
+
+**Manual Steps**
+
+1. Creating the tag
+2. Generating the appcast
 
 ---
 
@@ -52,7 +58,7 @@ Branch `master` is always ready to ship, creating a `X.X.X` version tag ships a 
 
 *"HP LaserJet was able to increase time spent on developing new features by 700 percent."*
 
-Focus on high value work.
+**Focus on high value work.**
 
 ---
 
@@ -66,8 +72,8 @@ But managing releases is still tedious.
 
 # Why not Mac App Store?
 
-- File-system access
-- Process management
+- File-System Access
+- Subprocess Management
 - Programming
 - Freedom
 
@@ -80,19 +86,22 @@ But managing releases is still tedious.
 - **CircleCI**: $39/month (Nothing free for macOS)
 - **App Center**: $40/month (250 free build minutes per month)
 
-# How about free?
+### How about free?
 
 ---
 
-# System
+# Implementation Summary
 
-1. Continuous Integration
-	- `xcodebuild` the zip
-	- `rsync` the zip to the server
-2. Manually Create the Appcast
-	- `rsync` down all the zips
-	- `generate_appcast` to create the `appcast.xml`
-	- `rsync` the `appcast.xml` up to the sever
+**Build the App on the Continuous Integration Server**
+
+- `xcodebuild` the zip
+- `rsync` the zip to the server
+
+**Manually Create the Appcast on a Developer Machine**
+
+- `rsync` down all the zips
+- `generate_appcast` to create the `appcast.xml`
+- `rsync` the `appcast.xml` and deltas back to the sever
 
 ---
 
@@ -130,9 +139,11 @@ Need to wait an indefinite amount of time after uploading your app package to fi
 
 	/usr/bin/ditto -c -k --keepParent $(APP_PATH) $(ZIP_PATH)
 
+(This is done on the continuous integration server.)
+
 ---
 
-## Deploying
+## Deploying the App
 
 	app_version=$(agvtool what-marketing-version -terse1 | tr -d '\n')
 
@@ -141,11 +152,13 @@ Need to wait an indefinite amount of time after uploading your app package to fi
 	user@server:\
 	"path/to/download.thepotionlab.com/potion/Potion\\ ${app_version}.zip"
 
-Only run this for tags!
+Only run this for tags! (`"$app_version" != "$tag_match"`)
+
+(This is done on the continuous integration server.)
 
 ---
 
-## Appcast
+## Generating the Appcast
 
 	rsync --archive --verbose --delete \
 	user@server:\
@@ -154,13 +167,27 @@ Only run this for tags!
 
 	generate_appcast ./updates/potion/
 
+(This is done on a developer machine.)
+
 (Also a nice way to create a backup of all your builds.)
 
 ---
 
-## Publishing Appcast?
+## Publishing the Appcast
 
-Once your appcast is published.
+Upload the deltas:
+
+	rsync --archive --verbose \
+		./updates/potion/*.delta \
+		user@server:path/to/download.thepotionlab.com/potion
+
+Upload the `appcast.xml`:
+
+	rsync --archive --verbose \
+		./updates/potion/appcast.xml \
+		user@server:path/to/download.thepotionlab.com/potion
+
+(This is done on a developer machine.)
 
 ---
 
