@@ -191,6 +191,21 @@ Upload the `appcast.xml`:
 
 ---
 
+# Implementation Summary
+
+**Build the app** on the continuous integration server
+
+1. `xcodebuild` the zip
+2. `rsync` the zip to the server
+
+**Manually create the appcast** on a developer machine
+
+1. `rsync` down all the zips
+2. `generate_appcast` to create the `appcast.xml`
+3. `rsync` the `appcast.xml` and deltas back to the sever
+
+---
+
 # Thanks!
 
 [robenkleene/continuous-deployment-with-sparkle](https://github.com/robenkleene/continuous-deployment-with-sparkle)
